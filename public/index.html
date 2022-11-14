@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ Quizzed }}</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+
+    <main class="lobby">
+        <section class="menuJogo">
+            <img src="./imgs/quizzed.jpg">
+            <h1 class="gameTitle">{ Quizzed }</h1>
+            <p class="btnCriarUmJogo button">Clique para criar um jogo!!</p>
+            <p class="btnIniciarJogo button hidden">Clique para iniciar o jogo!</p>
+
+            <div class="mensagemAguardando hidden">
+                <img src="./imgs/waiting.png">
+                <span>Aguardando a partida começar</span>
+            </div>
+
+            <div class="boxJoinPartida">
+                <p>Para entrar em um jogo cole o código da partida abaixo:</p>
+                <div>
+                    <input> <button class="btnEntrarNaPartida">Entrar</button>
+                </div>
+            </div>
+
+            <div class="boxCompartilharId hidden">
+                <p style="font-weight: bold;">Compartilhe o código abaixo para jogar com seus amigos</p>
+                <p id="idDoJogo" class="idDoJogo"></p>
+            </div>
+
+            <div class="boxWithPlayers hidden">
+                <p class="title"><img src="./imgs/playerGroup.png"> Jogadores conectados:</p>
+                <div id='divPlayers' class="divPlayers"></div>
+            </div>
+
+        </section>
+    </main>
+
+    <section class="escolhaDificuldade hidden">
+        <p class="title">Escolha uma dificuldade</p>
+        <div class="container">
+            <button value="FACIL">Fácil</button>
+            <button value="MEDIO">Médio</button>
+            <button value="DIFICIL">Difícil</button>
+        </div>
+    </section>
+
+    <section class="avisoDeResposta hidden"></section>
+
+    <section class="boxPergunta hidden"></section>
+
+    <section class="boxVencedor hidden"></section>
+
+    <section class="fundoModal hidden"></section>
+
+    <section class="tabuleiro hidden"></section>
+
+    <script type="text/javascript" src="js/frontMain.js" defer></script>
+    <script type="text/javascript" src="js/tabuleiro.js" defer></script>
+</body>
+
+</html>

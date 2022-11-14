@@ -1,0 +1,632 @@
+{
+  "FACIL": [
+    {
+      "titulo": "Em que estado brasileiro nasceu a apresentadora Xuxa?",
+      "alternativas": [
+        "RIO DE JANEIRO",
+        "RIO GRANDE DO SUL",
+        "SANTA CATARINA",
+        "GOIÁS",
+        "ESPÍRITO SANTO"
+      ],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Qual é o nome dado ao estado da água em forma de gelo?",
+      "alternativas": ["LÍQUIDO", "SÓLIDO", "GASOSO", "VAPOROSO", "GELADO"],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Qual era o apelido da cantora Elis Regina?",
+      "alternativas": [
+        "GAUCHINHA",
+        "PAULISTINHA",
+        "PIMENTINHA",
+        "ANDORINHA",
+        "ELISINHA"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Quem é a namorada do Mickey?",
+      "alternativas": [
+        "MARGARIDA",
+        "MINNIE",
+        "A PEQUENA SEREIA",
+        "OLÍVIA PALITO",
+        "MASHA"
+      ],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Qual é o personagem do folclore brasileiro que tem uma perna só?",
+      "alternativas": [
+        "CUCA",
+        "NEGRINHO DO PASTOREIO",
+        "BOITATÁ",
+        "SACI-PERERÊ",
+        "BUMBA MEU BOI"
+      ],
+      "respostaCorreta": 3
+    },
+    {
+      "titulo": "Fidel Castro nasceu em que país?",
+      "alternativas": ["JAMAICA", "CUBA", "EL SALVADOR", "MÉXICO", "EQUADOR"],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Quem proclamou a república no Brasil em 1889?",
+      "alternativas": [
+        "DUQUE DE CAXIAS",
+        "MARECHAL RONDON",
+        "DOM PEDRO II",
+        "MARECHAL DEODORO",
+        "PRINCESA ISABEL"
+      ],
+      "respostaCorreta": 3
+    },
+    {
+      "titulo": "Quem é o patrono do exército brasileiro?",
+      "alternativas": [
+        "MARECHAL DEODORO",
+        "BARÃO DE MAUÁ",
+        "DUQUE DE CAXIAS",
+        "MARQUÊS DE POMBAL",
+        "GENERAL MOURÃO"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Quem era o apresentador que reprovava os calouros tocando uma buzina?",
+      "alternativas": [
+        "RAUL GIL",
+        "BOLINHA",
+        "FLÁVIO CAVALCANTI",
+        "CHACRINHA",
+        "GUGU"
+      ],
+      "respostaCorreta": 3
+    },
+    {
+      "titulo": "O que era Frankenstein, de Mary Shelley?",
+      "alternativas": ["MONSTRO", "GORILA", "PRÍNCIPE", "SAPO", "HERÓI"],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "Qual é o signo do zodíaco de quem nasce no dia do ano-novo?",
+      "alternativas": [
+        "VIRGEM",
+        "AQUÁRIO",
+        "CAPRICÓRNIO",
+        "ÁRIES",
+        "ESCORPIÃO"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Quem fundou a fábrica de automóveis Ford?",
+      "alternativas": [
+        "HARRISON FORD",
+        "GERALD FORD",
+        "HENRY FORD",
+        "ANNA FORD",
+        "THIERRY FORD"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Qual é a cor que se associa com os grupos ecológicos?",
+      "alternativas": ["PRETA", "VERMELHA", "AZUL", "VERDE", "AMARELO"],
+      "respostaCorreta": 3
+    },
+    {
+      "titulo": "A água ferve a quantos graus centígrados?",
+      "alternativas": ["200", "100", "170", "220", "127"],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Quando é comemorado o dia da independência do Brasil?",
+      "alternativas": [
+        "21 DE ABRIL",
+        "12 DE OUTUBRO",
+        "7 DE SETEMBRO",
+        "25 DE DEZEMBRO",
+        "9 DE SETEMBRO"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Qual lugar é também chamado de Santa Sé?",
+      "alternativas": ["VENEZA", "VITÓRIA", "VANCOUVER", "VATICANO", "HIUNDAY"],
+      "respostaCorreta": 3
+    },
+    {
+      "titulo": "Quem tem por lema a frase: “Sempre alerta”?",
+      "alternativas": [
+        "MÉDICOS",
+        "ESCOTEIROS",
+        "BOMBEIROS",
+        "POLICIAIS",
+        "JAVASCRIPT"
+      ],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Quem foi o grande amor de Julieta?",
+      "alternativas": ["ROMEU", "ORFEU", "HAMLET", "JULIETO", "DR ESTRANHO"],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "Quantos signos formam o zodíaco?",
+      "alternativas": ["NOVE", "DEZ", "ONZE", "DOZE", "SETE"],
+      "respostaCorreta": 3
+    },
+    {
+      "titulo": "Vatapá é uma comida típica de qual estado?",
+      "alternativas": [
+        "PARANÁ",
+        "SANTA CATARINA",
+        "SÃO PAULO",
+        "BAHIA",
+        "MACAPÁ"
+      ],
+      "respostaCorreta": 3
+    },
+    {
+      "titulo": "Como se chama o lugar onde são armazenadas as balas de um revólver?",
+      "alternativas": ["CANO", "TAMBOR", "AGULHA", "GATILHO", "MOCHILA"],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Qual personagem da turma da Mônica tem apenas cinco fios de cabelo?",
+      "alternativas": ["MÔNICA", "CEBOLINHA", "CASCÃO", "MAGALI", "CENOURINHA"],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Qual cantora tinha o apelido de “Ternurinha” na época da jovem guarda?",
+      "alternativas": [
+        "SILVINHA",
+        "WANDERLÉIA",
+        "GRETCHEN",
+        "MARTINHA",
+        "MARIA BET NIA"
+      ],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "O churrasco é considerado uma comida típica de qual estado?",
+      "alternativas": [
+        "CEARÁ",
+        "RIO GRANDE DO SUL",
+        "PARÁ",
+        "MARANHÃO",
+        "RIO DE JANEIRO"
+      ],
+      "respostaCorreta": 1
+    }
+  ],
+  "MEDIO": [
+    {
+      "titulo": "Quantos jogadores um jogo de vôlei reúne na quadra?",
+      "alternativas": ["SEIS", "OITO", "DEZ", "DOZE", "SETE"],
+      "respostaCorreta": 3
+    },
+    {
+      "titulo": "Qual é o país do tango?",
+      "alternativas": ["URUGUAI", "ARGENTINA", "PARAGUAI", "ESPANHA", "ITÁLIA"],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Que imperador pôs fogo em Roma?",
+      "alternativas": ["TRAJANO", "NERO", "BRUTUS", "CALÍGULA", "ADRIANO"],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "A cidade de Pompéia, que foi soterrada por um vulcão fica em qual desses países?",
+      "alternativas": ["JAPÃO", "MÉXICO", "ITÁLIA", "ESTADOS UNIDOS", "CHINA"],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Como é chamado quem nasce em Milão, na Itália?",
+      "alternativas": [
+        "MILANENSE",
+        "MILANOSO",
+        "MILISTA",
+        "MILANÊS",
+        "MILANIANO"
+      ],
+      "respostaCorreta": 3
+    },
+    {
+      "titulo": "Que profissional usa uma ferramenta chamada formão?",
+      "alternativas": [
+        "CARPINTEIRO",
+        "RELOJOEIRO",
+        "CONFEITEIRO",
+        "BOMBEIRO",
+        "PADEIRO"
+      ],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "Em qual estádio Pelé marcou seu milésimo gol?",
+      "alternativas": [
+        "MORUMBI",
+        "PACAEMBU",
+        "MARACANÃ",
+        "MINEIRÃO",
+        "VILA BELMIRO"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "O que é um oboé?",
+      "alternativas": [
+        "VULCÃO",
+        "COMIDA",
+        "INSTRUMENTO MUSICAL",
+        "TRIBO INDÍGENA",
+        "ORIXÁ"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Como eram chamados os pilotos suicidas da Segunda Guerra?",
+      "alternativas": [
+        "CAMICASES",
+        "SASHIMIS",
+        "HARAQUIRIS",
+        "SUMÔS",
+        "SUICIDAS"
+      ],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "O que é gôndola?",
+      "alternativas": [
+        "EMBARCAÇÃO",
+        "BRINQUEDO",
+        "MÚSICA",
+        "SÍMBOLO",
+        "COMIDA"
+      ],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "Sashimi é um prato originário de qual país?",
+      "alternativas": ["JAPÃO", "CHINA", "ÍNDIA", "INDONÉSIA", "PAÍS DE GALES"],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "Como é chamada a cantora que representa o papel principal em uma ópera?",
+      "alternativas": [
+        "PRIMEIRA DAMA",
+        "DONA-PRIMA",
+        "PRIMA-DONA",
+        "OBRA-PRIMA",
+        "MESTRE DE CERIMÔNIA"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Peroba é uma espécie de?",
+      "alternativas": ["INSETO", "ÁRVORE", "VERME", "VERDURA", "AVE"],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": " O alpinismo é praticado em que lugar?",
+      "alternativas": ["MAR", "MONTANHA", "RIO", "PRAIA", "DESERTO"],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "O Coliseu é um monumento histórico de que cidade européia?",
+      "alternativas": ["PARIS", "COPENHAGUE", "ROMA", "LONDRES", "BARCELONA"],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Qual é o ponto mais alto da Terra?",
+      "alternativas": [
+        "EVEREST",
+        "MONTE SINAI",
+        "MONTE CASTELO",
+        "MONT BLANC",
+        "PRÉ CÉU"
+      ],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "Que rio corta a cidade de Londres, na Inglaterra?",
+      "alternativas": ["T MISA", "SENA", "RENO", "AUBE", "JORDÃO"],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "Qual é a raça do personagem principal do filme “Beethoven”?",
+      "alternativas": [
+        "FILA",
+        "PASTOR ALEMÃO",
+        "POODLE",
+        "SÃO-BERNARDO",
+        "LABRADOR"
+      ],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "Quem foi eleito presidente da África do Sul em 1994?",
+      "alternativas": [
+        "NELSON PIQUET",
+        "NELSON MANDELA",
+        "NELSON NED",
+        "JOHN NELSON",
+        "GANDHI"
+      ],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Qual cantor ficou conhecido como “O rei da voz”?",
+      "alternativas": [
+        "ORLANDO SILVA",
+        "VICENTE CELESTINO",
+        "FRANCISCO ALVES",
+        "CARLOS GALHARDO",
+        "ROBERTO CARLOS"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Quantos quilates tem o ouro puro?",
+      "alternativas": ["18", "20", "24", "30", "64"],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Qual é a sigla da Organização das Nações Unidas?",
+      "alternativas": ["ONU", "FMI", "CIA", "OTAN", "UNO"],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "De quantos em quantos anos aparece o cometa Halley?",
+      "alternativas": ["57 ANOS", "67 ANOS", "76 ANOS", "79 ANOS", "81 ANOS"],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Segundo a crença popular, a mula-sem-cabeça é mulher de quem?",
+      "alternativas": [
+        "DO COROINHA",
+        "DO PADRE",
+        "DO SACRISTÃO",
+        "DO BISPO",
+        "DO PAPA"
+      ],
+      "respostaCorreta": 1
+    }
+  ],
+  "DIFICIL": [
+    {
+      "titulo": "Como é chamada a gravura impressa sobre pranchas de madeira?",
+      "alternativas": [
+        "MATEROGRAFIA",
+        "LITOGRAFIA",
+        "XILOGRAFIA",
+        "SERIGRAFIA",
+        "MADEROGRAFIA"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Como o rei francês Luis XVI e sua esposa Maria Antonieta morreram?",
+      "alternativas": [
+        "ENFORCADOS",
+        "FUZILADOS",
+        "GUILHOTINADOS",
+        "QUEIMADOS",
+        "AFOGADOS"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Qual foi o piloto de Fórmula 1 que conquistou o título de campeão mundial cinco vezes?",
+      "alternativas": [
+        "JACQUES STEWART",
+        "ALAIN PROST",
+        "AYRTON SENNA",
+        "J. MANOEL FANGIO",
+        "LUIZ HAMILTON"
+      ],
+      "respostaCorreta": 3
+    },
+    {
+      "titulo": "Miró, Picasso e Salvador Dalí eram pintores:",
+      "alternativas": [
+        "ITALIANOS",
+        "PORTUGUESES",
+        "ESPANHÓIS",
+        "CHILENOS",
+        "EGÍPCIOS"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "O que o pintor Claude Monet representou em suas telas?",
+      "alternativas": [
+        "OS JARDINS DE GIVERNY",
+        "OS BISTRÔS DE PARIS",
+        "CENAS DO MOULIN ROUGE",
+        "PAISAGENS DA PROVENÇA",
+        "PIZZAS DA ITÁLIA"
+      ],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "Qual foi o primeiro presidente do Brasil eleito pelo povo?",
+      "alternativas": [
+        "GETÚLIO VARGAS",
+        "PRUDENTE DE MORAES",
+        "WASHINGTON LUÍS",
+        "TANCREDO NEVES",
+        "FERNANDO HENRIQUE CARDOSO"
+      ],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "O filme “A noviça rebelde”, premiado com 5 Oscars, foi estrelado por:",
+      "alternativas": [
+        "JUDY GARLAND",
+        "SHIRLEY TEMPLE",
+        "JULIE ANDREWS",
+        "DORIS DAY",
+        "VIOLA DAVIS"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Qual é a maior ilha da Europa?",
+      "alternativas": [
+        "GRÃ-BRETANHA",
+        "IRLANDA",
+        "ISL NDIA",
+        "SICÍLIA",
+        "EUBEIA"
+      ],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "A baleia está classificada em qual grupo de mamíferos?",
+      "alternativas": [
+        "CETÁCEOS",
+        "FELINOS",
+        "SIRÊNIOS",
+        "CARNÍVOROS",
+        "OVOLACTO"
+      ],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "Qual o sistema de transporte mais utilizado no Brasil?",
+      "alternativas": [
+        "FERROVIÁRIO",
+        "AÉREO",
+        "HIDROVIÁRIO",
+        "RODOVIÁRIO",
+        "TELETRANSPORTE"
+      ],
+      "respostaCorreta": 3
+    },
+    {
+      "titulo": "Como se chama o explorador de grutas e cavernas?",
+      "alternativas": [
+        "ESPELEÓLOGO",
+        "AGROSTÓLOGO",
+        "PSICÓLOGO",
+        "CAMPANÓLOGO",
+        "MINERADOR"
+      ],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "Pablo Picasso foi um dos criadores do:",
+      "alternativas": [
+        "CUBISMO",
+        "SURREALISMO",
+        "IMPRESSIONISMO",
+        "REALISMO",
+        "SUFISMO"
+      ],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "A que país pertence a Groenlândia?",
+      "alternativas": [
+        "DINAMARCA",
+        "INGLATERRA",
+        "NORUEGA",
+        "ESTADOS UNIDOS",
+        "ESPANHA"
+      ],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "Em que país Leonardo da Vinci viveu seus últimos dias?",
+      "alternativas": ["ESPANHA", "HOLANDA", "FRANÇA", "ITÁLIA", "EGITO"],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Qual destes países não se situa no Equador?",
+      "alternativas": ["QUÊNIA", "EQUADOR", "CHILE", "INDONÉSIA", "ARGENTINA"],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "As Ilhas Malvinas também são chamadas de:",
+      "alternativas": [
+        "STANLEY",
+        "WEDELLS",
+        "MEDANOSA",
+        "FALKLAND",
+        "MALDIVAS"
+      ],
+      "respostaCorreta": 3
+    },
+    {
+      "titulo": "O que procurava Juan Ponce de Leon quando descobriu a Flórida?",
+      "alternativas": [
+        "A CIDADE PERDIDA DE OURO",
+        "A FONTE DA JUVENTUDE",
+        "UNICÓRNIOS",
+        "SEU GATO",
+        "PEDRO ÁLVARES CABRAL"
+      ],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Qual é o país que tem uma árvore estampada na bandeira?",
+      "alternativas": ["EGITO", "CANADÁ", "LÍBANO", "MARROCOS", "ÍNDIA"],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Nova Caledônia faz parte da:",
+      "alternativas": [
+        "MICRONÉSIA",
+        "MELANÉSIA",
+        "POLINÉSIA",
+        "INDONÉSIA",
+        "ESTÔNIA"
+      ],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Qual foi a primeira mulher a entrar no “hall da fama” do rock and roll?",
+      "alternativas": [
+        "JANIS JOPLIN",
+        "CAROLE KING",
+        "ARETHA FRANKLIN",
+        "DIANA ROSS",
+        "PITTY"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "titulo": "Qual destas seleções nunca jogou uma final de copa?",
+      "alternativas": ["ESPANHA", "SUÉCIA", "HUNGRIA", "FRANÇA", "HOLANDA"],
+      "respostaCorreta": 0
+    },
+    {
+      "titulo": "O que é glicose?",
+      "alternativas": [
+        "AMINOÁCIDO",
+        "HIDRATO DE CARBONO",
+        "LIPÍDIO",
+        "PROTEÍNA",
+        "AÇÚCAR"
+      ],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Que pintor francês consagrou a mulher taitiana em suas telas?",
+      "alternativas": ["RENOIR", "GAUGUIN", "CÉZANNE", "MONET", "DEBRET"],
+      "respostaCorreta": 1
+    },
+    {
+      "titulo": "Qual é o quarto planeta do sistema solar?",
+      "alternativas": ["JÚPITER", "VÊNUS", "TERRA", "MARTE", "SATURNO"],
+      "respostaCorreta": 3
+    }
+  ]
+}
