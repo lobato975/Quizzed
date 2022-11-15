@@ -7,8 +7,8 @@ let jogadores = [];
 let vencedor = null;
 let alfaAlternativas = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
 
-// let ws = new WebSocket("ws://192.168.18.25:9090")
-let ws = new WebSocket("ws://localhost:9090")
+let ws = new WebSocket("ws://192.168.18.25:9090")
+// let ws = new WebSocket("ws://localhost:9090")
 
 const input = document.querySelector("input");
 
@@ -25,14 +25,17 @@ btnCriarUmJogo.addEventListener("click", e => {
 const btnEntrarNaPartida = document.querySelector(".btnEntrarNaPartida");
 btnEntrarNaPartida.addEventListener("click", e => {
 
-    if(input.value == null || input.value == '' || input.value == undefined || input.value.length != 36) return;
+    if (input.value == null || input.value == '' || input.value == undefined || input.value.length != 36) return;
     if (gameId === null) gameId = input.value;
+
+    let playerName = obterNomeDoJogador();
+    if (playerName == null) return;
 
     const payLoad = {
         "method": "join",
         "clientId": clientId,
         "gameId": gameId,
-        "playerName": obterNomeDoJogador()
+        "playerName": playerName
     }
 
     ws.send(JSON.stringify(payLoad));
@@ -60,22 +63,26 @@ btnIniciarPartida.addEventListener('click', event => {
 function obterNomeDoJogador() {
     let nome = window.prompt('Digite seu nome.');
 
-    while(nome == null || nome == undefined) {
+    while (nome == undefined) {
         nome = window.prompt('Nome inválido! Digite seu nome!');
     }
 
-    if(nome == '') nome = 'Jogador';
+    if (nome == '') nome = 'Jogador';
 
     return nome;
 }
 
 function entrarNaPartida(gameId) {
+    let playerName = obterNomeDoJogador();
+    if (playerName == null) return;
+
     console.log('Entrando na partida!')
+
     const payLoad = {
         "method": "join",
         "clientId": clientId,
         "gameId": gameId,
-        "playerName": obterNomeDoJogador()
+        "playerName": playerName
     }
 
     ws.send(JSON.stringify(payLoad));
@@ -91,7 +98,7 @@ function iniciarPartida_Backend() {
 }
 
 document.querySelector('.escolhaDificuldade').addEventListener('click', event => {
-    if(event.target.value == null) return;
+    if (event.target.value == null) return;
 
     const payLoad = {
         "jogador": clientId,
@@ -100,7 +107,7 @@ document.querySelector('.escolhaDificuldade').addEventListener('click', event =>
         "gameId": gameId
     }
 
-    console.log({payLoad})
+    console.log({ payLoad })
 
     ws.send(JSON.stringify(payLoad));
 
@@ -109,7 +116,7 @@ document.querySelector('.escolhaDificuldade').addEventListener('click', event =>
 })
 
 document.querySelector('.boxPergunta').addEventListener('click', event => {
-    if(event.target.dataset.alternativa == null) return;
+    if (event.target.dataset.alternativa == null) return;
 
     const payLoad = {
         "gameId": gameId,
@@ -119,7 +126,7 @@ document.querySelector('.boxPergunta').addEventListener('click', event => {
         "method": "responderPergunta"
     }
 
-    console.log({payLoad})
+    console.log({ payLoad })
 
     ws.send(JSON.stringify(payLoad));
 
@@ -130,20 +137,20 @@ document.querySelector('.boxPergunta').addEventListener('click', event => {
 let timeoutsList = {};
 
 function atualizaPosicaoJogadores(response) {
-    for(let x = 0; x < response.game.clients.length; x++) {
+    for (let x = 0; x < response.game.clients.length; x++) {
         let nomeJogador = response.game.clients[x].playerName;
 
-        console.log({ nomeJogador : response.game.clients[x] })
+        console.log({ nomeJogador: response.game.clients[x] })
 
-        if(jogadores[x].posicao != response.game.clients[x].posicao) {
+        if (jogadores[x].posicao != response.game.clients[x].posicao) {
 
             console.log(`[GAME] Atualiza posição do ${nomeJogador}`)
 
             let idCasaAnterior = jogadores[x].posicao;
             let idCasaNova = response.game.clients[x].posicao;
 
-            if(idCasaNova > 24) idCasaNova = 24; 
-            if(idCasaAnterior == 0) idCasaAnterior = 'Início';
+            if (idCasaNova > 24) idCasaNova = 24;
+            if (idCasaAnterior == 0) idCasaAnterior = 'Início';
 
             let casaAntiga = document.querySelector(`.casa[data-idcasa="${idCasaAnterior}"] .estadiaJogador`);
             let casaNova = document.querySelector(`.casa[data-idcasa="${idCasaNova}"] .estadiaJogador`);
@@ -152,34 +159,43 @@ function atualizaPosicaoJogadores(response) {
             let booleanAlterar = false;
 
             casaAntiga.childNodes.forEach(child => {
-                if(child.dataset.idjogador == nomeJogador) {
+                if (child.dataset.idjogador == nomeJogador) {
                     booleanAlterar = true;
                     tmpElement = child;
                     casaAntiga.removeChild(child)
                 }
             })
 
-            if(booleanAlterar == true) casaNova.appendChild(tmpElement);
+            if (booleanAlterar == true) casaNova.appendChild(tmpElement);
             jogadores[x].posicao = response.game.clients[x].posicao;
         }
     }
 }
 
+function limparTela() {
+    let containerGeral = document.querySelector('.gameContainer');
+
+    while (containerGeral.firstChild)
+        containerGeral.removeChild(containerGeral.firstChild)
+
+    return containerGeral;
+}
+
 ws.onmessage = message => {
     //message.data
     const response = JSON.parse(message.data);
-    console.log({[response.method] : response})
+    console.log({ [response.method]: response })
 
-    if(vencedor) return;
+    if (vencedor) return;
 
     //connect
-    if (response.method === "connect"){
+    if (response.method === "connect") {
         clientId = response.clientId;
         console.log("Client id Set successfully " + clientId)
     }
 
     //create
-    if (response.method === "create"){
+    if (response.method === "create") {
         gameId = response.game.id;
         console.log("game successfully created with id " + response.game.id)
 
@@ -187,39 +203,39 @@ ws.onmessage = message => {
         document.querySelector('.boxJoinPartida').classList.add('hidden');
 
         document.querySelector('.boxCompartilharId').classList.remove('hidden');
-        document.querySelector('.idDoJogo').classList.remove('hidden'); 
+        document.querySelector('.idDoJogo').classList.remove('hidden');
         document.querySelector('.idDoJogo').innerHTML = response.game.id;
 
         entrarNaPartida(gameId);
     }
 
     //update
-    if (response.method === "update"){
-        if(!document.querySelector('.lobby').classList.contains('hidden')) {
+    if (response.method === "update") {
+        if (!document.querySelector('.lobby').classList.contains('hidden')) {
             document.querySelector('.lobby').classList.add('hidden');
             document.querySelector('.tabuleiro').classList.remove('hidden');
         }
 
-        console.log({jogadores})
+        console.log({ jogadores })
 
         atualizaPosicaoJogadores(response);
     }
 
     //join
-    if (response.method === "join"){
+    if (response.method === "join") {
         const game = response.game;
         booleanGamemaster = game.gameMaster == clientId ? true : false;
         lastPayload = response.game;
 
-        console.log({clientId})
-        console.log({booleanGamemaster})
+        console.log({ clientId })
+        console.log({ booleanGamemaster })
 
-        while(divPlayers.firstChild)
-            divPlayers.removeChild (divPlayers.firstChild)
+        while (divPlayers.firstChild)
+            divPlayers.removeChild(divPlayers.firstChild)
 
-        game.clients.forEach (jogador => {
+        game.clients.forEach(jogador => {
 
-            console.log({jogador})
+            console.log({ jogador })
 
             const div = document.createElement("div");
             div.className = 'jogadorContainer';
@@ -235,14 +251,14 @@ ws.onmessage = message => {
         document.querySelector('.boxWithPlayers').className = 'boxWithPlayers';
 
         // if(game.clients.length >= 2 && booleanGamemaster == true) {
-        if(booleanGamemaster == true) {
+        if (booleanGamemaster == true) {
             document.querySelector('.btnIniciarJogo').className = 'btnIniciarJogo button';
         }
     }
 
     //iniciarPartida
-    if (response.method === "iniciarPartida"){
-        console.log({'iniciarPartida': response});
+    if (response.method === "iniciarPartida") {
+        console.log({ 'iniciarPartida': response });
         // console.log({'lastPayload': lastPayload});
 
         QNT_JOGADORES = response.game.clients.length;
@@ -254,16 +270,16 @@ ws.onmessage = message => {
     }
 
     //escolhaUmaDificuldade
-    if (response.method === "escolhaUmaDificuldade"){
+    if (response.method === "escolhaUmaDificuldade") {
         let jogador = response.jogador;
 
-        console.log({jogador})
-        console.log({clientId})
+        console.log({ jogador })
+        console.log({ clientId })
 
-        if(!document.querySelector('.escolhaDificuldade').classList.contains('hidden')) document.querySelector('.escolhaDificuldade').classList.add('hidden');
-        if(!document.querySelector('.fundoModal').classList.contains('hidden')) document.querySelector('.fundoModal').classList.add('hidden');
+        if (!document.querySelector('.escolhaDificuldade').classList.contains('hidden')) document.querySelector('.escolhaDificuldade').classList.add('hidden');
+        if (!document.querySelector('.fundoModal').classList.contains('hidden')) document.querySelector('.fundoModal').classList.add('hidden');
 
-        if(jogador == clientId) {
+        if (jogador == clientId) {
             document.querySelector('.escolhaDificuldade').classList.remove('hidden');
             document.querySelector('.fundoModal').classList.remove('hidden');
         }
@@ -271,18 +287,18 @@ ws.onmessage = message => {
 
     // recebePergunta
     if (response.method === 'recebePergunta') {
-        if(perguntaAtual != null && perguntaAtual.titulo == response.pergunta.titulo) return;
+        if (perguntaAtual != null && perguntaAtual.titulo == response.pergunta.titulo) return;
         perguntaAtual = response.pergunta;
 
         let boxPergunta = document.querySelector('.boxPergunta');
-        while(boxPergunta.firstChild) boxPergunta.removeChild (boxPergunta.firstChild);
+        while (boxPergunta.firstChild) boxPergunta.removeChild(boxPergunta.firstChild);
 
         let tmpTitle = document.createElement('p');
         tmpTitle.innerHTML = perguntaAtual.titulo;
         tmpTitle.className = 'title';
         boxPergunta.appendChild(tmpTitle);
 
-        for(let x = 0; x < perguntaAtual.alternativas.length; x++) {
+        for (let x = 0; x < perguntaAtual.alternativas.length; x++) {
             let tmpElement = document.createElement('p');
             tmpElement.innerHTML = `${alfaAlternativas[x]}) ${perguntaAtual.alternativas[x]}`;
             tmpElement.setAttribute('data-alternativa', perguntaAtual.alternativas[x]);
@@ -305,7 +321,7 @@ ws.onmessage = message => {
     // retornoDaRespostaDaPergunta
     if (response.method === 'retornoDaRespostaDaPergunta') {
         let avisoDeResposta = document.querySelector('.avisoDeResposta');
-        while(avisoDeResposta.firstChild) avisoDeResposta.removeChild (avisoDeResposta.firstChild);
+        while (avisoDeResposta.firstChild) avisoDeResposta.removeChild(avisoDeResposta.firstChild);
 
         let resposta = response.booleanResposta == true ? 'acertou' : 'errou';
 
@@ -323,7 +339,7 @@ ws.onmessage = message => {
 
         let tmpDocument = document;
 
-        timeoutsList[response.game.id] = setTimeout(function() {
+        timeoutsList[response.game.id] = setTimeout(function () {
             tmpDocument.querySelector('.avisoDeResposta').classList.add('hidden');
             tmpDocument.querySelector('.fundoModal').classList.add('hidden');
         }, 3000);
@@ -331,20 +347,37 @@ ws.onmessage = message => {
 
     // vencedorEncontrado
     if (response.method === 'vencedorEncontrado') {
-        clearTimeout(timeoutsList[response.game.id]);
+        clearTimeout(timeoutsList[response.game.id])
         atualizaPosicaoJogadores(response);
 
-        vencedor = response.vencedor;
-        let boxVencedor = document.querySelector('.boxVencedor');
+        let containerGeral = limparTela();
 
+        let vencedor = response.vencedor;
+
+        let boxVencedor = document.createElement('p');
+        boxVencedor.className = 'boxVencedor';
         boxVencedor.innerHTML = `FIM DE JOGO!
         ${vencedor.playerName} VENCEU A PARTIDA!`;
 
-        if(vencedor.clientId == clientId) {
+        if (vencedor.clientId == clientId) {
             boxVencedor.innerHTML = `PARABÉNS, VOCÊ VENCEU!!`;
         }
 
-        document.querySelector('.boxVencedor').classList.remove('hidden');
-        document.querySelector('.fundoModal').classList.remove('hidden');
+        boxVencedor.innerHTML += `<br><button class="buttonPadrao jogarNovamente" onclick="location.reload(true);">Jogar novamente!</button>`
+
+        containerGeral.appendChild(boxVencedor);
+    }
+
+    if (response.method === 'partidaEncerradaInatividade') {
+        clearTimeout(timeoutsList[response.game.id])
+
+        let containerGeral = limparTela();
+
+        let tmpComponent = document.createElement('p');
+        tmpComponent.innerHTML = `<img src="./imgs/timeout.png"> Partida encerrada por inatividade`;
+        tmpComponent.className = 'boxInatividade';
+        
+        containerGeral.appendChild(tmpComponent);
+        console.log('Partida encerrada por inatividade')
     }
 }

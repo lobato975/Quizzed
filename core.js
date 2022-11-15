@@ -62,6 +62,25 @@ wsServer.on("request", request => {
                     if(this.jogadorAtual == null) this.jogadorAtual = 0;
                     this.verificaIntegridadeDaRodada();
 
+                    if((new Date().getTime() / 1000) - (this.rodadas[this.rodadaAtual][this.jogadorAtual].horarioInicio / 1000) >= (2 * 60)) {
+                        clearTimeout(runningGames[this.id]);
+                        games[this.id]['running'] = false;
+
+                        console.log(`[GAME] Partida ${this.id} encerrada por inatividade`);
+
+                        const payLoad = {
+                            "method": "partidaEncerradaInatividade",
+                            "game" : this
+                        }
+    
+                        for(let jogador of this.clients) {
+                            let con = clients[jogador.clientId].connection;
+                            con.send(JSON.stringify(payLoad));
+                        }
+
+                        return;
+                    }
+
                     console.log(this.rodadas[this.rodadaAtual][this.jogadorAtual]);
 
                     // VERIFICA SE O JOGADOR JÁ JOGOU
@@ -89,13 +108,13 @@ wsServer.on("request", request => {
 
                     // VERIFICA SE O JOGADOR RESPONDEU A PERGUNTA
                     if(this.rodadas[this.rodadaAtual][this.jogadorAtual].jaRespondeu == false) {
-                        console.log(`${this.rodadas[this.rodadaAtual][this.jogadorAtual].playerName} não respondeu`)
+                        console.log(`${this.clients[this.jogadorAtual].playerName} não respondeu`)
                         return;
                     }
 
                     // SE O JOGADOR JÁ RESPONDEU, VAI PRO PRÓXIMO
                     if(this.rodadas[this.rodadaAtual][this.jogadorAtual].jaRespondeu == true) {
-                        console.log(`${this.rodadas[this.rodadaAtual][this.jogadorAtual].playerName} já respondeu`)
+                        console.log(`${this.clients[this.jogadorAtual].playerName} já respondeu`)
 
                         this.ultimaJogadaFeita = this.jogadorAtual;
                         this.verificaQuemVaiJogar();
@@ -188,7 +207,7 @@ wsServer.on("request", request => {
                 },
                 verificaIntegridadeDaRodada() {
                     if(!this.rodadas[this.rodadaAtual] || !this.rodadas[this.rodadaAtual][this.jogadorAtual]) {
-                        console.log('refazendo a rodada')
+                        console.log('[GAME] Gerando a rodada')
                         this.rodadas[this.rodadaAtual] = [];
 
                         for(let x = 0; x < this.clients.length; x++) {
@@ -200,7 +219,8 @@ wsServer.on("request", request => {
                                 "resposta": null,
                                 "respostaIndex": null,
                                 "jaRespondeu": false,
-                                "acertou": false
+                                "acertou": false,
+                                "horarioInicio": new Date().getTime()
                             }
 
                             this.rodadas[this.rodadaAtual].push(tmpObj);
@@ -325,7 +345,6 @@ wsServer.on("request", request => {
                 "game" : games[result.gameId]
             }
 
-
             games[result.gameId].clients.forEach(jogador => {
                 let con = clients[jogador.clientId].connection;
                 con.send(JSON.stringify(payLoad));
@@ -383,7 +402,9 @@ wsServer.on("request", request => {
 })
 
 function updateGameState(game){
-    console.log('updateGameState')
+    if(!games[game.id]['running']) return;
+
+    console.log('[GAME] updateGameState')
     game.executarRodada();
 
     const payLoad = {

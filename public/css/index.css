@@ -9,6 +9,44 @@
     font-size: 12px;
 }
 
+@media (max-width: 600px) {
+    .tabuleiro {
+        position: relative;
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+
+        max-width: unset !important;
+        max-height: unset !important;
+        width: unset !important;
+        height: unset !important;
+
+        left: 0 !important;
+
+        margin: unset !important;
+    }
+
+    .escolhaDificuldade {
+        left: 0 !important;
+        transform: translate(0, -50%) !important;
+    }
+
+    .boxPergunta, .boxVencedor {
+        left: 0 !important;
+        transform: translate(0, -50%) !important;
+        padding: 1em !important;
+    }
+
+    .avisoDeResposta {
+        left: 0;
+        transform: translate(0, -50%);
+        width: 100%;
+        padding: 2em 0;
+    }
+}
+
 .tabuleiro {
     position: absolute;
     left: 50%;
@@ -179,6 +217,29 @@
 .jogador:nth-child(4) {
     background-color: yellow;
 } */
+
+.buttonPadrao {
+    font-size: 14px;
+    background-color: #ffd500;
+    border-radius: 10px;
+    padding: 1em;
+    cursor: pointer;
+    user-select: none;
+    transition: ease all .2s;
+    font-family: 'Poppins';
+}
+
+.buttonPadrao:hover {
+    background-color: #ffbb00;
+    transition: ease all .2s;
+}
+
+.buttonPadrao.jogarNovamente {
+    width: 100%;
+    padding: .5em 1em;
+    border: 1px solid #726001;
+    margin-top: 2em;
+}
 
 main {
     margin: -8px;
@@ -429,6 +490,32 @@ main {
     transition: ease all .2s;
 }
 
+.boxInatividade {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 2em;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 0 39px 0px rgb(0 0 0 / 15%);
+    z-index: 50;
+
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.boxInatividade img {
+    margin-right: 1em;
+    width: 80px;
+}
+
 .boxPergunta, .boxVencedor {
     position: fixed;
     top: 50%;
@@ -528,6 +615,7 @@ main {
 }
 
 .boxVencedor {
+    padding: 2em;
     text-align: center;
     font-size: 20px;
     font-weight: bold;
