@@ -28,8 +28,6 @@ const COLORSAVAILABLE = ['GREEN', 'RED', 'BLUE', 'TURQUOISE', 'BLACK', 'BLUEVIOL
 let listCoresUnicas = [];
 
 
-
-
 wsServer.on("request", request => {
     //connect
     const connection = request.accept(null, request.origin);
@@ -327,16 +325,6 @@ wsServer.on("request", request => {
                 connection.send(JSON.stringify(payLoad))
                 return;
             }
-
-            // const ballId = result.ballId;
-            // const color = result.color;
-            // let state = games[gameId].state;
-            // if (!state)
-            //     state = {}
-            
-            // state[ballId] = color;
-            // games[gameId].state = state;
-            
         }
 
         if(result.method === 'iniciarPartida') {
