@@ -1,45 +1,40 @@
 // CONFIGURAÇÕES DO SERVIDOR
 let express = require('express');
-const http = require("http");
+let http = require("http");
 
-const app = express();
+let app = express();
 app.use(express.static(__dirname + '/public' ));
 app.get("/quizzed/", (req,res) => res.sendFile(`${__dirname}/public/index.html`))
-app.listen(9091, () => console.log(`Listening on http port 9091 -> https://localhost:9091`))
+app.listen(9091, () => console.log(`[SERVER] HTTP listening on 9091 -> http://localhost:9091`))
 
-const websocketServer = require("websocket").server
-const httpServer = http.createServer(app);
+let websocketServer = require("websocket").server
+let httpServer = http.createServer(app);
 
-// httpServer.listen()
-httpServer.listen(9090, () => console.log("Listening.. on 9090"))
+httpServer.listen(9090, () => console.log("[SERVER] Websocket Listening on 9090"))
 
-const wsServer = new websocketServer({
+let wsServer = new websocketServer({
     "httpServer": httpServer
 })
 
-
-//hashmap clients
-const clients = {};
-const games = {};
-const runningGames = {};
-const PERGUNTAS = require('./perguntas.json');
+let clients = {};
+let games = {};
+let runningGames = {};
+let COLORSAVAILABLE = ['GREEN', 'RED', 'BLUE', 'TURQUOISE', 'BLACK', 'BLUEVIOLET', 'ORANGE', 'PINK'];
+let PERGUNTAS = require('./perguntas.json');
 let PERGUNTAS_RESPONDIDAS = [];
-const COLORSAVAILABLE = ['GREEN', 'RED', 'BLUE', 'TURQUOISE', 'BLACK', 'BLUEVIOLET', 'ORANGE', 'PINK'];
 let listCoresUnicas = [];
 
 
 wsServer.on("request", request => {
-    //connect
-    const connection = request.accept(null, request.origin);
+    let connection = request.accept(null, request.origin);
     connection.on("open", () => console.log("opened!"))
     connection.on("close", () => console.log("closed!"))
     connection.on("message", message => {
-        const result = JSON.parse(message.utf8Data)
-        //I have received a message from the client
-        //a user want to create a new game
+        let result = JSON.parse(message.utf8Data)
+        // CRIAR NOVA PARTIDA
         if (result.method === "create") {
-            const clientId = result.clientId;
-            const gameId = guid();
+            let clientId = result.clientId;
+            let gameId = guid();
 
             games[gameId] = {
                 "id": gameId,
@@ -51,6 +46,7 @@ wsServer.on("request", request => {
                 "inicioDaPartida": null,
                 "inicioDaRodada": null,
                 "rodadas": [],
+
                 executarRodada() {
                     console.log(`executarRodada | RODADA: ${this.rodadaAtual} | JOGADOR ATUAL: ${this.jogadorAtual}`)
 
@@ -58,15 +54,18 @@ wsServer.on("request", request => {
                     if(this.inicioDaPartida == null) this.inicioDaPartida = Date.now();
                     if(this.inicioDaRodada == null) this.inicioDaRodada = Date.now();
                     if(this.jogadorAtual == null) this.jogadorAtual = 0;
+
+                    // VERIFICA SE A RODADA ESTÁ CONFIGURADA - SE NÃO ESTIVER, CRIA UMA NOVA
                     this.verificaIntegridadeDaRodada();
 
+                    // VERIFICA SE O JOGADOR PASSOU MAIS DE 2 MINUTOS SEM JOGAR - ENCERRA A PARTIDA
                     if((new Date().getTime() / 1000) - (this.rodadas[this.rodadaAtual][this.jogadorAtual].horarioInicio / 1000) >= (2 * 60)) {
                         clearTimeout(runningGames[this.id]);
                         games[this.id]['running'] = false;
 
                         console.log(`[GAME] Partida ${this.id} encerrada por inatividade`);
 
-                        const payLoad = {
+                        let payLoad = {
                             "method": "partidaEncerradaInatividade",
                             "game" : this
                         }
@@ -79,8 +78,6 @@ wsServer.on("request", request => {
                         return;
                     }
 
-                    console.log(this.rodadas[this.rodadaAtual][this.jogadorAtual]);
-
                     // VERIFICA SE O JOGADOR JÁ JOGOU
                     if(this.jogadorAtual == this.ultimaJogadaFeita && this.clients.length > 1) {
                         this.verificaQuemVaiJogar();
@@ -92,25 +89,25 @@ wsServer.on("request", request => {
                     if(this.rodadas[this.rodadaAtual][this.jogadorAtual]['dificuldadeEscolhida'] == null) {
                         console.log(`[${Date.now()}] - escolhaUmaDificuldade`);
 
-                        const payLoad = {
+                        let payLoad = {
                             "method": "escolhaUmaDificuldade",
                             "game" : games[gameId],
                             "jogador" : games[gameId].clients[this.jogadorAtual].clientId
                         }
 
-                        const con = clients[payLoad.jogador].connection;
+                        let con = clients[payLoad.jogador].connection;
                         con.send(JSON.stringify(payLoad));
 
                         return;
                     }
 
-                    // VERIFICA SE O JOGADOR RESPONDEU A PERGUNTA
+                    // VERIFICA SE O JOGADOR JÁ RESPONDEU A PERGUNTA
                     if(this.rodadas[this.rodadaAtual][this.jogadorAtual].jaRespondeu == false) {
                         console.log(`${this.clients[this.jogadorAtual].playerName} não respondeu`)
                         return;
                     }
 
-                    // SE O JOGADOR JÁ RESPONDEU, VAI PRO PRÓXIMO
+                    // SE O JOGADOR JÁ RESPONDEU, VAI PRO PRÓXIMO JOGADOR
                     if(this.rodadas[this.rodadaAtual][this.jogadorAtual].jaRespondeu == true) {
                         console.log(`${this.clients[this.jogadorAtual].playerName} já respondeu`)
 
@@ -120,10 +117,12 @@ wsServer.on("request", request => {
                         return;
                     }
                 },
+
                 escolherDificuldade(dificuldadeEscolhida) {
+                    // VERIFICA SE O OBJETO DE PERGUNTAS ESTÁ MONTADO CORRETAMENTE - CASO CONTRÁRIO CRIA UM NOVO
                     this.verificaIntegridadeDasPerguntasRespondidas();
 
-                    // DEFINE DENTRO DA RODADA ATUAL PRO JOGADOR ATUAL QUAL DIFICULDADE ELE SELECIONOU
+                    // DEFINE DENTRO DA RODADA ATUAL DIFICULDADE O JOGADOR ATUAL SELECIONOU
                     this.rodadas[this.rodadaAtual][this.jogadorAtual].dificuldadeEscolhida = dificuldadeEscolhida;
                     if(!PERGUNTAS_RESPONDIDAS[this.jogadorAtual][dificuldadeEscolhida]) {
                         PERGUNTAS_RESPONDIDAS[this.jogadorAtual][dificuldadeEscolhida] = [];
@@ -135,53 +134,51 @@ wsServer.on("request", request => {
                         perguntaSelecionada = Math.floor(Math.random() * PERGUNTAS[dificuldadeEscolhida].length);
                     }
 
+                    PERGUNTAS_RESPONDIDAS[this.jogadorAtual][dificuldadeEscolhida].push(perguntaSelecionada);
+
                     this.rodadas[this.rodadaAtual][this.jogadorAtual].perguntaRecebida = PERGUNTAS[dificuldadeEscolhida][perguntaSelecionada].titulo;
                     this.rodadas[this.rodadaAtual][this.jogadorAtual].indexPergunta = perguntaSelecionada;
 
                     let indexResposta = PERGUNTAS[dificuldadeEscolhida][perguntaSelecionada].respostaCorreta;
                     this.rodadas[this.rodadaAtual][this.jogadorAtual].resposta = PERGUNTAS[dificuldadeEscolhida][perguntaSelecionada].alternativas[indexResposta];
 
-                    console.log({perguntaSelecionada});
-
-                    // GUARDA ESSA PERGUNTA PRA EVITAR QUE ELE RESPONDA DE NOVO
-                    PERGUNTAS_RESPONDIDAS[this.jogadorAtual][dificuldadeEscolhida].push(perguntaSelecionada);
-
                     return {
                         "titulo": PERGUNTAS[dificuldadeEscolhida][perguntaSelecionada].titulo,
                         "alternativas": PERGUNTAS[dificuldadeEscolhida][perguntaSelecionada].alternativas
                     }
                 },
-                verificaQuemVaiJogar() {
-                    console.log('verificaQuemVaiJogar')
-                    console.log({clientsLength: this.clients.length})
 
+                verificaQuemVaiJogar() {
+                    console.log(`[GAME] verificaQuemVaiJogar`)
+                    console.log(`JogadorAtual: ${this.jogadorAtual} | ultimaJogadaFeita: ${this.ultimaJogadaFeita} | qntJogadores: ${this.clients.length}`)
+
+                    // VERIFICA SE A ÚLTIMA JOGADA FOI FEITA PELO JOGADOR ATUAL
                     if(this.jogadorAtual == this.ultimaJogadaFeita) {
                         this.jogadorAtual++;
-                        console.log('1b')
-                        console.log(this.jogadorAtual)
-                        console.log({ultimaJogadaFeita: this.ultimaJogadaFeita})
                     }
 
+                    // SE O INDEX DO JOGADOR ATUAL É IGUAL A QUANTIDADE DE JOGADORES, RESETA O INDEX
                     if(this.jogadorAtual == this.clients.length) {
                         this.rodadaAtual++;
                         this.jogadorAtual = 0;
-                        console.log('1a')
-                        console.log(this.jogadorAtual)
                     }
                 },
+
                 verificaRespostaCerta(resposta) {
+                    // DEFINE NO OBJETO DE RODADAS QUE ELE RESPONDEU A PERGUNTA
                     this.rodadas[this.rodadaAtual][this.jogadorAtual].jaRespondeu = true;
                     let dificuldadeEscolhida = this.rodadas[this.rodadaAtual][this.jogadorAtual].dificuldadeEscolhida;
                     let indexPergunta = this.rodadas[this.rodadaAtual][this.jogadorAtual].indexPergunta;
                     let indexResposta = PERGUNTAS[dificuldadeEscolhida][indexPergunta].respostaCorreta;
                     let casasParaAndar = 1;
 
-                    console.log(`tentativa: ${resposta}`);
-                    console.log(`correta: ${PERGUNTAS[dificuldadeEscolhida][indexPergunta].alternativas[indexResposta]}`);
+                    console.log(`[GAME] Tentativa: ${resposta}`);
+                    console.log(`[GAME] Correta: ${PERGUNTAS[dificuldadeEscolhida][indexPergunta].alternativas[indexResposta]}`);
 
                     if(dificuldadeEscolhida == 'MEDIO') casasParaAndar = 2;
                     if(dificuldadeEscolhida == 'DIFICIL') casasParaAndar = 10;
 
+                    // VERIFICA SE A ALTERNATIVA SELECIONADA É A RESPOSTA CORRETA
                     if(PERGUNTAS[dificuldadeEscolhida][indexPergunta].alternativas[indexResposta] == resposta) {
                         this.rodadas[this.rodadaAtual][this.jogadorAtual].acertou = true;
                         this.clients[this.jogadorAtual].posicao += casasParaAndar;
@@ -191,10 +188,14 @@ wsServer.on("request", request => {
 
                     return this.rodadas[this.rodadaAtual][this.jogadorAtual].acertou;
                 },
+
                 getPergunta() {
+                    // RETORNA OS DADOS DA RODADA DO JOGADOR ATUAL CONTENDO A PERGUNTA/DIFICULDADE SELECIONADA
                     return this.rodadas[this.rodadaAtual][this.jogadorAtual];
                 },
+
                 verificaIntegridadeDasPerguntasRespondidas() {
+                    // VERIFICA SE O OBJETO PERGUNTAS_RESPONDIDAS EXISTE - NÃO EXISTINDO PREENCHE O OBJETO
                     for(let x = 0; x < this.clients.length; x++) {
                         if(PERGUNTAS_RESPONDIDAS[this.jogadorAtual] == null) PERGUNTAS_RESPONDIDAS[this.jogadorAtual] = {
                             "FACIL": [],
@@ -203,7 +204,9 @@ wsServer.on("request", request => {
                         };
                     }
                 },
+
                 verificaIntegridadeDaRodada() {
+                    // VERIFICA SE O OBJETO DE RODADAS ESTÁ PREENCHIDO CORRETAMENTE - CASO CONTRÁRIO CRIA O OBJETO
                     if(!this.rodadas[this.rodadaAtual] || !this.rodadas[this.rodadaAtual][this.jogadorAtual]) {
                         console.log('[GAME] Gerando a rodada')
                         this.rodadas[this.rodadaAtual] = [];
@@ -225,19 +228,21 @@ wsServer.on("request", request => {
                         }
                     }
                 },
+
                 verificaSeHaVencedores() {
+                    // MÉTODO AUTOEXPLICATIVO - VERIFICA SE HÁ VENCEDORES NA PARTIDA
                     let jogadorVencedor;
 
                     this.clients.forEach(jogador => {
                         if(jogador.posicao >= 24) {
-                            console.log('ALGUÉM VENCEU!')
+                            console.log(`[GAME] ${jogador.playerName} VENCEU A PARTIDA ${this.id}!!`)
                             jogadorVencedor = jogador;
                         }
                     })
 
                     if(!jogadorVencedor) return;
 
-                    const payLoad = {
+                    let payLoad = {
                         "method": "vencedorEncontrado",
                         "game" : this,
                         "vencedor": jogadorVencedor,
@@ -259,24 +264,19 @@ wsServer.on("request", request => {
                 "game" : games[gameId]
             }
 
-            console.log({games})
-
             const con = clients[clientId].connection;
             con.send(JSON.stringify(payLoad));
         }
 
-        //a client want to join
+        // JUNTAR-SE A UMA PARTIDA
         if (result.method === "join") {
 
             const clientId = result.clientId;
             const gameId = result.gameId;
             const game = games[gameId];
-            console.log({game})
 
             let color = COLORSAVAILABLE[Math.floor(Math.random() * COLORSAVAILABLE.length)];
-
             while(listCoresUnicas.includes(color)) {
-                console.log(color)
                 color = COLORSAVAILABLE[Math.floor(Math.random() * COLORSAVAILABLE.length)];
             }
 
@@ -302,31 +302,31 @@ wsServer.on("request", request => {
                 "game": game
             }
 
-            //loop through all clients and tell them that people has joined
-            game.clients.forEach(c => {
-                clients[c.clientId].connection.send(JSON.stringify(payLoad))
+            game.clients.forEach(jogador => {
+                clients[jogador.clientId].connection.send(JSON.stringify(payLoad))
             })
         }
 
         //a user plays
-        if (result.method === "play") {
-            const gameId = result.gameId;
+        // if (result.method === "play") {
+        //     const gameId = result.gameId;
 
-            if(result.request.label == 'escolherDificuldade') {
-                games[gameId].escolherDificuldade(result.request.value);
+        //     if(result.request.label == 'escolherDificuldade') {
+        //         games[gameId].escolherDificuldade(result.request.value);
 
-                const payLoad = {
-                    "method": "connect",
-                    "clientId": clientId,
-                    "pergunta": games[gameId].getPergunta()
-                }
+        //         const payLoad = {
+        //             "method": "connect",
+        //             "clientId": clientId,
+        //             "pergunta": games[gameId].getPergunta()
+        //         }
 
-                //send back the client connect
-                connection.send(JSON.stringify(payLoad))
-                return;
-            }
-        }
+        //         //send back the client connect
+        //         connection.send(JSON.stringify(payLoad))
+        //         return;
+        //     }
+        // }
 
+        // INICIAR UMA PARTIDA
         if(result.method === 'iniciarPartida') {
             let payLoad = {
                 "method": "iniciarPartida",
@@ -344,6 +344,7 @@ wsServer.on("request", request => {
             return;
         }
 
+        // ESCOLHEU UMA DIFICULDADE DE PERGUNTA
         if(result.method === 'dificuldadeEscolhida') {
             let pergunta = games[result.gameId].escolherDificuldade(result.dificuldadeEscolhida);
 
@@ -357,6 +358,7 @@ wsServer.on("request", request => {
             con.send(JSON.stringify(payLoad));
         }
 
+        // RESPONDER UMA PERGUNTA
         if(result.method === 'responderPergunta') {
             let booleanResposta = games[result.gameId].verificaRespostaCerta(result.resposta);
 
@@ -373,35 +375,35 @@ wsServer.on("request", request => {
         }
     })
 
-    //generate a new clientId
-    const clientId = guid();
+    // GERA UM GUID NOVO PARA CADA CONEXÃO
+    let clientId = guid();
     clients[clientId] = {
         "connection":  connection
     }
 
-    const payLoad = {
+    let payLoad = {
         "method": "connect",
         "clientId": clientId
     }
 
-    //send back the client connect
+    // INFORMA AO USUÁRIO QUE A CONEXÃO FOI BEM SUCEDIDA
     connection.send(JSON.stringify(payLoad))
-
 })
 
+// LOOP QUE ATUALIZA AS INFORMAÇÕES DA PARTIDA
 function updateGameState(game){
     if(!games[game.id]['running']) return;
 
     console.log('[GAME] updateGameState')
     game.executarRodada();
 
-    const payLoad = {
+    let payLoad = {
         "method": "update",
         "game": game
     }
 
-    game.clients.forEach(c => {
-        clients[c.clientId].connection.send(JSON.stringify(payLoad))
+    game.clients.forEach(jogador => {
+        clients[jogador.clientId].connection.send(JSON.stringify(payLoad))
     })
 
     runningGames[game.id] = setTimeout(() => {
@@ -414,6 +416,4 @@ function S4() {
     return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
 }
  
-// then to call it, plus stitch in '4' in the third group
-const guid = () => (S4() + S4() + "-" + S4() + "-4" + S4().substr(0,3) + "-" + S4() + "-" + S4() + S4() + S4()).toUpperCase();
- 
+let guid = () => (S4() + S4() + "-" + S4() + "-4" + S4().substr(0,3) + "-" + S4() + "-" + S4() + S4() + S4()).toUpperCase();
