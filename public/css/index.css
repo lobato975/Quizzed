@@ -241,6 +241,19 @@
     margin-top: 2em;
 }
 
+.buttonPadrao.verResposta {
+    width: 100%;
+    padding: .5em;
+    border: 1px solid #726001;
+    margin-top: 1em;
+}
+
+.boxPergunta.bloqueiaRespostas {
+    user-select: none;
+    pointer-events: none;
+    cursor: none;
+}
+
 main {
     margin: -8px;
     height: 100vh;

@@ -137,7 +137,7 @@ function atualizaPosicaoJogadores(response) {
     for (let x = 0; x < response.game.clients.length; x++) {
         let nomeJogador = response.game.clients[x].playerName;
 
-        console.log({ nomeJogador: response.game.clients[x] })
+        // console.log({ nomeJogador: response.game.clients[x] })
 
         if (jogadores[x].posicao != response.game.clients[x].posicao) {
 

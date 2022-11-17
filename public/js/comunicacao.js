@@ -4,7 +4,7 @@ let ws = new WebSocket("ws://192.168.18.25:9090")
 ws.onmessage = message => {
     //message.data
     const response = JSON.parse(message.data);
-    console.log({ [response.method]: response })
+    // console.log({ [response.method]: response })
 
     if (vencedor) return;
 
@@ -31,12 +31,12 @@ ws.onmessage = message => {
 
     //update
     if (response.method === "update") {
-        if (!document.querySelector('.lobby').classList.contains('hidden')) {
+        if (!document.querySelector('.lobby')?.classList.contains('hidden')) {
             document.querySelector('.lobby').classList.add('hidden');
             document.querySelector('.tabuleiro').classList.remove('hidden');
         }
 
-        console.log({ jogadores })
+        // console.log({ jogadores })
 
         atualizaPosicaoJogadores(response);
     }
@@ -129,6 +129,11 @@ ws.onmessage = message => {
         document.querySelector('.fundoModal').classList.remove('hidden');
     }
 
+    // recebePerguntaAposErro
+    if (response.method === 'recebePerguntaAposErro') {
+        exibeMensagemDeErroOuAcerto(response);
+    }
+
     // retornoDaRespostaDaPergunta
     if (response.method === 'retornoDaRespostaDaPergunta') {
         let avisoDeResposta = document.querySelector('.avisoDeResposta');
@@ -187,8 +192,101 @@ ws.onmessage = message => {
         let tmpComponent = document.createElement('p');
         tmpComponent.innerHTML = `<img src="./imgs/timeout.png"> Partida encerrada por inatividade`;
         tmpComponent.className = 'boxInatividade';
-        
+
         containerGeral.appendChild(tmpComponent);
         console.log('Partida encerrada por inatividade')
     }
+
+    if (response.method === 'pularPerguntaVerRespostaRetorno') {
+        clearTimeout(timeoutsList[response.game.id])
+        let alternativas = document.querySelectorAll('.boxPergunta p');
+
+        console.log({respostaCorreta: response.alternativaCorreta})
+
+        alternativas.forEach(item => {
+            if(item.dataset['alternativaindex'] == response.alternativaCorreta) {
+                item.setAttribute('style', 'color: green !important; font-weight: bold;');
+            }
+        })
+
+        let tmpDocument = document;
+
+        timeoutsList[response.game.id] = setTimeout(function () {
+            tmpDocument.querySelector('.boxPergunta').classList.remove('bloqueiaRespostas');
+            tmpDocument.querySelector('.boxPergunta').classList.add('hidden');
+            tmpDocument.querySelector('.fundoModal').classList.add('hidden');
+        }, 3500);
+    }
+}
+
+function exibeMensagemDeErroOuAcerto(response) {
+    let avisoDeResposta = document.querySelector('.avisoDeResposta');
+    while (avisoDeResposta.firstChild) avisoDeResposta.removeChild(avisoDeResposta.firstChild);
+
+    let resposta = response.booleanResposta == true ? 'acertou' : 'errou';
+
+    let imgElement = document.createElement('img');
+    imgElement.src = `imgs/${resposta == 'acertou' ? 'correct' : 'wrong'}.png`;
+    avisoDeResposta.appendChild(imgElement)
+
+    let tmpElement = document.createElement('p');
+    tmpElement.className = `retornoMessage ${resposta}`;
+    tmpElement.innerHTML = resposta == 'acertou' ? `Você acertou!!` : 'Você errou!';
+    avisoDeResposta.appendChild(tmpElement);
+
+    avisoDeResposta.classList.remove('hidden');
+    document.querySelector('.fundoModal').classList.remove('hidden');
+
+    let tmpDocument = document;
+
+    timeoutsList[response.game.id] = setTimeout(function () {
+        tmpDocument.querySelector('.avisoDeResposta').classList.add('hidden');
+        tmpDocument.querySelector('.fundoModal').classList.add('hidden');
+
+        if (response.method === 'recebePerguntaAposErro') exibirPerguntaAtual(response);
+    }, 1500);
+}
+
+function exibirPerguntaAtual(response) {
+    // if (perguntaAtual != null && perguntaAtual.titulo == response.pergunta.titulo) return;
+    perguntaAtual = response.pergunta;
+
+    let boxPergunta = document.querySelector('.boxPergunta');
+    while (boxPergunta.firstChild) boxPergunta.removeChild(boxPergunta.firstChild);
+
+    let tmpTitle = document.createElement('p');
+    tmpTitle.innerHTML = perguntaAtual.titulo;
+    tmpTitle.className = 'title';
+    boxPergunta.appendChild(tmpTitle);
+
+    for (let x = 0; x < perguntaAtual.alternativas.length; x++) {
+        let tmpElement = document.createElement('p');
+        tmpElement.innerHTML = `${alfaAlternativas[x]}) ${perguntaAtual.alternativas[x]}`;
+        tmpElement.setAttribute('data-alternativa', perguntaAtual.alternativas[x]);
+        tmpElement.setAttribute('data-alternativaindex', x);
+        boxPergunta.appendChild(tmpElement);
+    }
+
+    if (response.method === 'recebePerguntaAposErro') {
+        let tmpButton = document.createElement('button');
+        tmpButton.className = 'buttonPadrao verResposta';
+        tmpButton.innerText = 'Pular pergunta e ver a resposta';
+        tmpButton.setAttribute('onclick', `pularPerguntaVerResposta()`)
+        boxPergunta.appendChild(tmpButton);
+    }
+
+    boxPergunta.classList.remove('hidden');
+    document.querySelector('.fundoModal').classList.remove('hidden');
+}
+
+function pularPerguntaVerResposta() {
+    document.querySelector('.boxPergunta').classList.add('bloqueiaRespostas');
+
+    const payLoad = {
+        "gameId": gameId,
+        "jogador": clientId,
+        "method": "pularPerguntaVerResposta"
+    }
+
+    ws.send(JSON.stringify(payLoad));
 }
