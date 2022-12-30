@@ -19,6 +19,17 @@ btnCriarUmJogo.addEventListener("click", e => {
     ws.send(JSON.stringify(payLoad));
 })
 
+const btnEncerrarPartida = document.querySelector('.encerrarPartida');
+btnEncerrarPartida.addEventListener("click", event => {
+    const payLoad = {
+        "method": "hackEncerrarPartida",
+        "clientId": clientId,
+        "gameId": gameId,
+    }
+
+    ws.send(JSON.stringify(payLoad));
+})
+
 const btnEntrarNaPartida = document.querySelector(".btnEntrarNaPartida");
 btnEntrarNaPartida.addEventListener("click", e => {
 

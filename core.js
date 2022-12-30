@@ -10,12 +10,16 @@ app.listen(9091, () => console.log(`[SERVER] HTTP listening on 9091 -> http://lo
 let websocketServer = require("websocket").server
 let httpServer = http.createServer(app);
 
+// httpServer.listen();
 httpServer.listen(9090, () => console.log("[SERVER] Websocket Listening on 9090"))
 
 let wsServer = new websocketServer({
     "httpServer": httpServer
 })
 
+fs = require('fs');
+
+let RANKING = require('./ranking.json');
 let clients = {};
 let games = {};
 let runningGames = {};
@@ -252,12 +256,21 @@ wsServer.on("request", request => {
 
                     if (!jogadorVencedor) return;
 
+                    let tmpRanking = RANKING;
+                    tmpRanking.push({ "playerName": jogadorVencedor.playerName, "createdDate": new Date().getTime() })
+
                     let payLoad = {
                         "method": "vencedorEncontrado",
                         "game": this,
                         "vencedor": jogadorVencedor,
-                        "nomeVencedor": jogadorVencedor.playerName
+                        "nomeVencedor": jogadorVencedor.playerName,
+                        "rankingVencedores": tmpRanking
                     }
+
+                    fs.writeFile('ranking.json', JSON.stringify(tmpRanking), function (err) {
+                        if (err) return console.log(err);
+                        console.log('ranking salvo com sucesso')
+                    });
 
                     for (let jogador of this.clients) {
                         console.log(jogador)
@@ -451,6 +464,13 @@ wsServer.on("request", request => {
 
             const con = clients[clientIdAtual].connection;
             con.send(JSON.stringify(payLoad));
+        }
+
+        if (result.method === 'hackEncerrarPartida') {
+            let client = games[result.gameId].jogadorAtual;
+            
+            games[result.gameId].clients[client].posicao = 25;
+            games[result.gameId].verificaSeHaVencedores();
         }
     })
 

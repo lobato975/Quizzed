@@ -1,4 +1,4 @@
-let ws = new WebSocket("ws://192.168.18.25:9090")
+let ws = new WebSocket("ws://localhost:80")
 // let ws = new WebSocket("ws://localhost:9090")
 
 ws.onmessage = message => {
@@ -86,6 +86,8 @@ ws.onmessage = message => {
         jogadores = response.game.clients;
 
         iniciarPartida();
+
+        if(booleanGamemaster == true) document.querySelector('.encerrarPartida').classList.remove('hidden');
     }
 
     //escolhaUmaDificuldade
@@ -170,7 +172,7 @@ ws.onmessage = message => {
 
         let vencedor = response.vencedor;
 
-        let boxVencedor = document.createElement('p');
+        let boxVencedor = document.createElement('div');
         boxVencedor.className = 'boxVencedor';
         boxVencedor.innerHTML = `FIM DE JOGO!
         ${vencedor.playerName} VENCEU A PARTIDA!`;
@@ -179,9 +181,24 @@ ws.onmessage = message => {
             boxVencedor.innerHTML = `PARABÉNS, VOCÊ VENCEU!!`;
         }
 
-        boxVencedor.innerHTML += `<br><button class="buttonPadrao jogarNovamente" onclick="location.reload(true);">Jogar novamente!</button>`
+        let tmpRankingElement = document.createElement('div');
+        tmpRankingElement.className = 'ranking';
+
+        tmpRankingElement.innerHTML += `
+            <p style="font-weight: bold; margin: 0 0 1.5em !important; color: #a8901; text-align: center;">Veja abaixo os últimos vencedores</p>`;
+
+        console.log(response.rankingVencedores)
+
+        for (let x = 0; x <= response.rankingVencedores.length; x++) {
+            let posicao = x + 1;
+            if(response.rankingVencedores[x] == null || response.rankingVencedores[x] == undefined) continue;
+            tmpRankingElement.innerHTML += `<p style="text-align: left; color: black; font-family: Poppins;">${posicao}) ${response.rankingVencedores[x].playerName}`;
+        }
+
+        boxVencedor.innerHTML += `<button class="buttonPadrao jogarNovamente" onclick="location.reload(true);">Jogar novamente!</button>`
 
         containerGeral.appendChild(boxVencedor);
+        containerGeral.appendChild(tmpRankingElement);
     }
 
     if (response.method === 'partidaEncerradaInatividade') {
@@ -201,10 +218,10 @@ ws.onmessage = message => {
         clearTimeout(timeoutsList[response.game.id])
         let alternativas = document.querySelectorAll('.boxPergunta p');
 
-        console.log({respostaCorreta: response.alternativaCorreta})
+        console.log({ respostaCorreta: response.alternativaCorreta })
 
         alternativas.forEach(item => {
-            if(item.dataset['alternativaindex'] == response.alternativaCorreta) {
+            if (item.dataset['alternativaindex'] == response.alternativaCorreta) {
                 item.setAttribute('style', 'color: green !important; font-weight: bold;');
             }
         })
